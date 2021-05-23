@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api context="/payment" name="PaymentAPI" xmlns="http://ws.apache.org/ns/synapse">
+    <resource methods="POST" uri-template="/makepayment">
+        <inSequence>
+            <property expression="json-eval($.paymentType)" name="PaymentType" scope="default" type="STRING"/>
+            <switch source="get-property('PaymentType')">
+                <case regex="card">
+                    <log description="Card Payment Log" level="custom">
+                        <property expression="fn:concat('Routing to ', get-property('PaymentType'))" name="message"/>
+                    </log>
+                    <send>
+                        <endpoint key="CardPaymentEP"/>
+                    </send>
+                </case>
+                <case regex="mobile">
+                    <log description="Mobile Payment Log" level="custom">
+                        <property expression="fn:concat('Routing to ', get-property('PaymentType'))" name="message"/>
+                    </log>
+                    <send>
+                        <endpoint key="MobilePaymentEP"/>
+                    </send>
+                </case>
+                <default>
+                    <log description="Fault Log" level="custom">
+                        <property expression="fn:concat('Invalid Payment Type ', get-property('PaymentType'))" name="message"/>
+                    </log>
+                    <respond description="respond"/>
+                </default>
+            </switch>
+        </inSequence>
+        <outSequence>
+            <send/>
+        </outSequence>
+        <faultSequence/>
+    </resource>
+    <resource methods="POST GET" uri-template="/sendsms">
+        <inSequence>
+            <log description="Log Send SMS" level="custom">
+                <property name="message" value="Routing to notify.lk"/>
+            </log>
+            <send>
+                <endpoint key="NotifylkEP"/>
+            </send>
+        </inSequence>
+        <outSequence>
+            <send/>
+        </outSequence>
+        <faultSequence/>
+    </resource>
+</api>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api context="/delivery" name="DeliveryAPI" xmlns="http://ws.apache.org/ns/synapse">
+    <resource methods="POST" uri-template="/calculatedelivery">
+        <inSequence>
+            <log description="delivery log" level="custom">
+                <property name="message" value="Welcome to Delivery Service"/>
+            </log>
+            <send>
+                <endpoint key="CalculateDeliveryCostEP"/>
+            </send>
+        </inSequence>
+        <outSequence>
+            <send/>
+        </outSequence>
+        <faultSequence/>
+    </resource>
+    <resource methods="GET" uri-template="/last">
+        <inSequence>
+            <log description="delivery log" level="custom">
+                <property name="message" value="Welcome to delivery service- last delivery"/>
+            </log>
+            <send>
+                <endpoint key="LastDeliveryEP"/>
+            </send>
+        </inSequence>
+        <outSequence>
+            <send/>
+        </outSequence>
+        <faultSequence/>
+    </resource>
+    <resource methods="POST" uri-template="/add">
+        <inSequence>
+            <log description="log delivery 3" level="custom">
+                <property name="message" value="Delivery Service - add"/>
+            </log>
+            <send>
+                <endpoint key="NewDeliveryEP"/>
+            </send>
+        </inSequence>
+        <outSequence>
+            <send/>
+        </outSequence>
+        <faultSequence/>
+    </resource>
+    <resource methods="POST" uri-template="/newaddress">
+        <inSequence>
+            <log description="delivery log 4" level="custom">
+                <property name="message" value="Delivery service - new address"/>
+            </log>
+            <send>
+                <endpoint key="NewDeliveryAddressEP"/>
+            </send>
+        </inSequence>
+        <outSequence>
+            <send/>
+        </outSequence>
+        <faultSequence/>
+    </resource>
+</api>

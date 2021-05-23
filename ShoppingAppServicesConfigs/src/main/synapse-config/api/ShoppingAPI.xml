@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api context="/shopping" name="ShoppingAPI" xmlns="http://ws.apache.org/ns/synapse">
+    <resource methods="GET" uri-template="/queryproducts">
+        <inSequence>
+            <log level="custom">
+                <property name="message" value="Welcome to ShoppingService"/>
+            </log>
+            <send>
+                <endpoint key="GetAllProductsEP"/>
+            </send>
+        </inSequence>
+        <outSequence>
+            <send/>
+        </outSequence>
+        <faultSequence/>
+    </resource>
+    <resource methods="POST" uri-template="/addproduct">
+        <inSequence>
+            <log description="log add product" level="custom">
+                <property name="message" value="Welcome to ShoppingService- add-product"/>
+            </log>
+            <send>
+                <endpoint key="AddProductEP"/>
+            </send>
+        </inSequence>
+        <outSequence>
+            <send/>
+        </outSequence>
+        <faultSequence/>
+    </resource>
+    <resource methods="DELETE" uri-template="/deleteproduct/{id}">
+        <inSequence>
+            <log description="log delete product" level="custom">
+                <property name="message" value="Welcome to shopping service- delete-product"/>
+            </log>
+            <send>
+                <endpoint key="DeleteProductEP"/>
+            </send>
+        </inSequence>
+        <outSequence>
+            <send/>
+        </outSequence>
+        <faultSequence/>
+    </resource>
+    <resource methods="PUT" uri-template="/updateproduct">
+        <inSequence>
+            <log description="log update product" level="custom">
+                <property name="message" value="Welcome to ShoppingService - update-product"/>
+            </log>
+            <send>
+                <endpoint key="UpdateProductEP"/>
+            </send>
+        </inSequence>
+        <outSequence>
+            <send/>
+        </outSequence>
+        <faultSequence/>
+    </resource>
+    <resource methods="POST" uri-template="/placeorder">
+        <inSequence>
+            <log description="log place order" level="custom">
+                <property name="message" value="Welcome to shopping service - place-order"/>
+            </log>
+            <send>
+                <endpoint key="PlaceOrderEP"/>
+            </send>
+        </inSequence>
+        <outSequence>
+            <send/>
+        </outSequence>
+        <faultSequence/>
+    </resource>
+    <resource methods="POST" uri-template="/auth">
+        <inSequence>
+            <property description="auth property" expression="json-eval($.authType)" name="AuthenticationType" scope="default" type="STRING"/>
+            <switch source="get-property('AuthenticationType')">
+                <case regex="signin">
+                    <log description="sign in log" level="custom">
+                        <property expression="fn:concat('Routing to ', get-property('AuthenticationType'))" name="message"/>
+                    </log>
+                    <send>
+                        <endpoint key="SigninEP"/>
+                    </send>
+                </case>
+                <case regex="signup">
+                    <log description="sign up log" level="custom">
+                        <property expression="fn:concat('Routing to ', get-property('AuthenticationType'))" name="message"/>
+                    </log>
+                    <send>
+                        <endpoint key="SignupEP"/>
+                    </send>
+                </case>
+                <default>
+                    <log description="fault log" level="custom">
+                        <property expression="fn:concat('Invalid auth call: ', get-property('AuthenticationType'))" name="message"/>
+                    </log>
+                    <respond description="respond"/>
+                </default>
+            </switch>
+        </inSequence>
+        <outSequence>
+            <send/>
+        </outSequence>
+        <faultSequence/>
+    </resource>
+    <resource methods="HEAD DELETE POST GET OPTIONS PUT PATCH" uri-template="/*">
+        <inSequence>
+            <property name="Access-Control-Request-Headers" scope="transport" type="STRING" value="authorization,content-type"/>
+            <property name="Access-Control-Allow-Methods" scope="transport" type="STRING" value="GET,POST,PUT,DELETE,OPTIONS"/>
+            <property name="Access-Control-Allow-Headers" scope="transport" type="STRING" value="*"/>
+            <property name="Access-Control-Allow-Origin" scope="transport" type="STRING" value="*"/>
+            <property name="RESPONSE" scope="default" type="STRING" value="true"/>
+            <respond/>
+        </inSequence>
+        <outSequence/>
+        <faultSequence/>
+    </resource>
+</api>

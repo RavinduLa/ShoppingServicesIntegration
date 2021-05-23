@@ -1,0 +1,58 @@
+openapi: 3.0.1
+info:
+  title: DeliveryAPI
+  description: API Definition of DeliveryAPI
+  version: 1.0.0
+servers:
+- url: http://localhost:8290/delivery
+paths:
+  /calculatedelivery:
+    post:
+      requestBody:
+        description: Sample Payload
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                payload:
+                  type: object
+        required: false
+      responses:
+        default:
+          description: Default response
+  /last:
+    get:
+      responses:
+        default:
+          description: Default response
+  /add:
+    post:
+      requestBody:
+        description: Sample Payload
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                payload:
+                  type: object
+        required: false
+      responses:
+        default:
+          description: Default response
+  /newaddress:
+    post:
+      requestBody:
+        description: Sample Payload
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                payload:
+                  type: object
+        required: false
+      responses:
+        default:
+          description: Default response
